@@ -7,6 +7,20 @@ the session id in a cookie. It's up to you how to save and retrieve
 the session object.
 
 WSGISession has a pair of objects to use: SessionMiddleware and Session.
+This objects should work on any WSGI compilant application; I have tested
+on a plain WSGI application and on a Bottle application.
+
+## How install WSGISession
+
+Installing is easy, as the package is on PyPi. You can either
+
+* Download wsgisession.py into your project root
+* Use python tools to install from Pypi (pip, easy_install)
+
+```bash
+$ pip install wsgisession
+$ easy_install wsgisession
+```
 
 ## How to use SessionMiddleware
 
