@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
 Session is a convenience object, that stores data and the session id.
 When created, session.data and session.id are initialized to {} and None.
-It's your factory the responsible to fill those fields.
+Your factory object is the responsible to fill those fields.
 
 This object have also convenient methods for easy access to the data,
 using the form Session[key], and also a method Session.get() with a
@@ -67,7 +67,7 @@ default option.
 ## How to implement a SessionFactory
 
 The SessionFactory object is the responsible to load and store the
-Session data wherever it goes (it's up to you!!!). This object must
+Session data wherever it goes (it's up to you). This object must
 implement only two methods (more if you need):
 
 * load(id): loads the id and returns a Session object.
