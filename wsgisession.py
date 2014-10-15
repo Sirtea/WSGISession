@@ -13,10 +13,26 @@ class Session(object):
     def __getitem__(self, key):
         return self.data[key]
 
+    def __delitem__(self, key):
+        try:
+            del self.data[key]
+        except KeyError:
+            pass
+
+    def __contains__(self, key):
+        return key in self.data
+
+    def __iter__(self):
+        return iter(self.data)
+
+    def __len__(self):
+        return len(self.data)
+
     def get(self, key, default=None):
-        if key in self.data:
+        try:
             return self.data[key]
-        return default
+        except KeyError:
+            return default
 
 
 class SessionMiddleware(object):
