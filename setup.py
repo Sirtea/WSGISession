@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='WSGISession',
-    version='0.1.0',
+    version='0.1.1',
     author='Gerard Monells',
     author_email='gerard.monells@gmail.com',
     url='https://github.com/Sirtea/WSGISession',
