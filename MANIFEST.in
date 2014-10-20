@@ -1,4 +1,4 @@
-include setup.py.py
+include setup.py
 include wsgisession.py
 include README.txt
 include LICENSE.txt
