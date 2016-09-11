@@ -35,36 +35,53 @@ cookie. The work of load and retrieve the session based on the id is
 provided by a factory that must be written by yourself. Learn by example:
 
 ```python
-#!/usr/bin/env python
-
+import uuid
 from wsgiref.simple_server import make_server
 from wsgisession import SessionMiddleware
+from wsgisession import Session
+
+
+sessions = {}
 
 
 class ExampleFactory(object):
+
     def load(self, id):
         session = Session()
-        # whatever needed to retireve session object
-        session.data = {'dummy': 'key'}
-        session.id = '123'
+        if id in sessions:
+            session.id = id
+            session.data = sessions[id]
+        else:
+            pass
+
         return session
 
     def save(self, session):
-        # save the session.data, possibly generating session.id
+        print(sessions)
+        if not session.id:
+            session.id = uuid.uuid4().hex
+
+        sessions[session.id] = session.data
         return session.id
 
 
 def wrapped_app(environ, start_response):
     session = environ.get('wsgisession')
-    session['counter'] = session.get('counter', 0) + 1
+    # google chrome sends 2 requests ...
+    if environ['PATH_INFO'] != '/favicon.ico':
+        session['counter'] = session.get('counter', 0) + 1
+
     start_response('200 OK', [('Content-Type', 'text/html')])
-    return 'Visited %s times\n' % session['counter']
+    return ['Visited {} times\n'.format(session['counter']).encode()]
+
 
 factory = ExampleFactory()
 app = SessionMiddleware(wrapped_app, factory)
 
 if __name__ == '__main__':
     httpd = make_server('localhost', 8080, app)
+    print("Listening on http://localhost:8080")
+
     httpd.serve_forever()
 ```
 
