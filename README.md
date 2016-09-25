@@ -6,7 +6,7 @@ store user sessions of a user, understanding that this user will store
 the session id in a cookie. It's up to you how to save and retrieve
 the session object.
 
-WSGISession has a pair of objects to use: SessionMiddleware and Session.
+WSGISession has a pair of objects to use: `SessionMiddleware` and `Session`.
 This objects should work on any WSGI compilant application; I have tested
 on a plain WSGI application and on a Bottle application.
 
@@ -24,15 +24,17 @@ $ easy_install wsgisession
 
 ## How to use SessionMiddleware
 
-SessionMiddleware is a middleware, wrapping your application.
-An instance of the SessionMiddleware object is a WSGI application
+`SessionMiddleware` is a middleware, wrapping your application.
+An instance of the `SessionMiddleware` object is a WSGI application
 that behaves like a WSGI callable. Once the WSGI server calls a
-SessionMiddleware instance, the callable method passes the call to the
-wrapped WSGI callable, appending a Session object that corresponds to the
-session id stored on a cookie. When calling the start_response method,
+`SessionMiddleware` instance, the callable method passes the call to the
+wrapped WSGI callable, appending a `Session` object that corresponds to the
+session id stored on a cookie. When calling the `start_response` method,
 it also saves the session object and stores the session id in the
-cookie. The work of load and retrieve the session based on the id is
-provided by a factory that must be written by yourself. Learn by example:
+cookie. The work of loading and retrieving the session based on the id is
+provided by a factory that must be written by you. Here is a simple example
+where sessions are simply stored in a global dictionary (but this can also be
+a local or remote database either):
 
 ```python
 import uuid
@@ -87,19 +89,20 @@ if __name__ == '__main__':
 
 ## How to use Session
 
-Session is a convenience object, that stores data and the session id.
-When created, session.data and session.id are initialized to {} and None.
-Your factory object is the responsible to fill those fields.
+`Session` is a convenience object, that stores data and the session id.
+When created, `session.data` and `session.id` are initialized to `{}` 
+and `None` respectively. Your factory object is the responsible to
+fill those fields.
 
-This object have also convenient methods for easy access to the data,
-using the form Session[key], and also a method Session.get() with a
+This object has also a convenience methods for easy access to the data,
+using the form `session[key]`, and also a method `session.get()` with a
 default option.
 
 ## How to implement a SessionFactory
 
-The SessionFactory object is the responsible to load and store the
-Session data wherever it goes (it's up to you). This object must
-implement only two methods (more if you need):
+The `SessionFactory` class is the responsible to load and store the
+session data wherever it goes (it's up to you). This class must
+implement only two methods (you can add more if you need):
 
 * load(id): loads the id and returns a Session object.
 * save(session): saves the session and returns the id to load later
