@@ -1,4 +1,7 @@
-from Cookie import SimpleCookie
+try:
+    from Cookie import SimpleCookie
+except ImportError:
+    from http.cookies import SimpleCookie
 
 
 class Session(object):
@@ -13,26 +16,10 @@ class Session(object):
     def __getitem__(self, key):
         return self.data[key]
 
-    def __delitem__(self, key):
-        try:
-            del self.data[key]
-        except KeyError:
-            pass
-
-    def __contains__(self, key):
-        return key in self.data
-
-    def __iter__(self):
-        return iter(self.data)
-
-    def __len__(self):
-        return len(self.data)
-
     def get(self, key, default=None):
-        try:
+        if key in self.data:
             return self.data[key]
-        except KeyError:
-            return default
+        return default
 
 
 class SessionMiddleware(object):
